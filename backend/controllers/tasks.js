@@ -27,4 +27,19 @@ tasksRouter.get("/", (req, res) => {
   });
 });
 
+tasksRouter.put("/:id", (req, res) => {
+  jsonReader("./db.json", (err, db) => {
+    if (err) {
+      logger.log("Error reading file:", err);
+      return;
+    }
+    // change the task state
+    db.tasks[req.params.id].state = !db.tasks[req.params.id].state;
+    fs.writeFile("./db.json", JSON.stringify(db), (err) => {
+      if (err) console.log("Error writing file:", err);
+    });
+    res.json(db);
+  });
+});
+
 module.exports = tasksRouter;
