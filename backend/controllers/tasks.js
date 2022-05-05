@@ -23,20 +23,26 @@ tasksRouter.get("/", (req, res) => {
       return;
     }
     logger.info(db);
-    res.json(db);
+    res.json(db.tasks);
   });
 });
 
 tasksRouter.put("/:id", (req, res) => {
   jsonReader("./db.json", (err, db) => {
     if (err) {
-      logger.log("Error reading file:", err);
+      logger.error("Error reading file:", err);
       return;
+    }
+
+    if (req.params.id > db.tasks.length - 1) {
+      return res.status(404).end();
     }
     // change the task state
     db.tasks[req.params.id].state = !db.tasks[req.params.id].state;
     fs.writeFile("./db.json", JSON.stringify(db), (err) => {
-      if (err) console.log("Error writing file:", err);
+      if (err) {
+        logger.error("Error updating file:", err);
+      }
     });
     res.json(db);
   });
