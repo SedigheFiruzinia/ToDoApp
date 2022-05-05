@@ -1,0 +1,34 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "text": "test backend",
+      "state": false
+    },
+    {
+      "id": 2,
+      "text": "test frontend",
+      "state": false
+    },
+    {
+      "id": 3,
+      "text": "implement backend",
+      "state": false
+    },
+    {
+      "id": 4,
+      "text": "implement frontend",
+      "state": false
+    },
+    {
+      "id": 5,
+      "text": "design frontend",
+      "state": false
+    },
+    {
+      "id": 6,
+      "text": "deploy app",
+      "state": false
+    }
+  ]
+}
