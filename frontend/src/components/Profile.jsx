@@ -7,8 +7,9 @@ const Profile = () => {
   const dispatch = useDispatch();
   const tasks = useSelector((element) => element.Tasks);
   console.log(tasks);
-  const onClick = (task) => {
-    dispatch(stateChanged(task));
+
+  const onClick = (id) => {
+    dispatch(stateChanged(id));
   };
 
   return (
@@ -31,7 +32,7 @@ const Profile = () => {
             <Container className="d-flex justify-content-center" key={t.id}>
               <Card
                 className=" rounded-0"
-                onClick={() => onClick(t)}
+                onClick={() => onClick(t.id)}
                 style={{ cursor: "pointer", width: "118px", height: "150px" }}
               >
                 <Card.Body style={{ fontSize: "12px" }}>

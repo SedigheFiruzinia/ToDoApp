@@ -7,14 +7,14 @@ const getAll = async () => {
   return response.data;
 };
 
-const changeState = async (id) => {
+const updateState = async (id) => {
   const response = await axios.put(`${baseUrl}/${id}`);
   return response.data;
 };
 
 const exportedObject = {
   getAll,
-  changeState,
+  updateState,
 };
 
 export default exportedObject;

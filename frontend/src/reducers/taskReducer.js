@@ -13,12 +13,13 @@ export const tasksInitialized = (id) => {
   };
 };
 
-export const stateChanged = (task) => {
+export const stateChanged = (id) => {
   return async (dispatch) => {
+    await taskService.updateState(id);
     dispatch({
       type: "State-Changed",
       payload: {
-        task,
+        id,
       },
     });
   };
@@ -30,13 +31,13 @@ const TaskReducer = (state = [], action) => {
       return action.payload.tasks;
 
     case "State-Changed":
-      return state.map((task) =>
-        task.id === action.payload.task.id
+      return state.map((t) =>
+        t.id === action.payload.id
           ? {
-              ...task,
-              state: !action.payload.note.state,
+              ...t,
+              state: !t.state,
             }
-          : task
+          : t
       );
 
     default:
