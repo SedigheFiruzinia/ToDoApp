@@ -7,6 +7,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import App from "./App";
 import tasksReducer from "./reducers/taskReducer";
 import notificationReducer from "./reducers/notificationReducer";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const reducer = combineReducers({
   Tasks: tasksReducer,

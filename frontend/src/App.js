@@ -17,7 +17,7 @@ const App = () => {
     <Container fluid="xs" className="pl-0">
       <Router>
         <Routes>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={<Profile />} />
         </Routes>
       </Router>
     </Container>
