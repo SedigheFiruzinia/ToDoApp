@@ -1,7 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Card } from "react-bootstrap";
+import { Container, ListGroup, ListGroupItem } from "react-bootstrap";
 import { stateChanged } from "../reducers/taskReducer";
+import undone from "./Images/loading.png";
+import done from "./Images/tick (1).png";
 
 const Tasks = () => {
   const dispatch = useDispatch();
@@ -12,26 +14,32 @@ const Tasks = () => {
   };
 
   return (
-    <>
-      {tasks.map((t) => (
-        <Container className="d-flex justify-content-center" key={t.id}>
-          <Card
-            className=" rounded-0"
-            onClick={() => onClick(t.id)}
-            style={{ cursor: "pointer", width: "118px", height: "150px" }}
-          >
-            <Card.Body style={{ fontSize: "12px" }}>
-              <Card.Text
-                className="TextTruncation"
-                style={{ color: "rgba(5, 5, 5, 0.7)" }}
-              >
-                {t.text}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Container>
-      ))}
-    </>
+    <Container>
+      <ListGroup variant="flush">
+        {tasks.map((t) => (
+          <ListGroup.Item action onClick={() => onClick(t.id)} key={t.id}>
+            {t.state ? (
+              <img
+                src={done}
+                width="20"
+                height="20"
+                alt=""
+                style={{ marginRight: 30 }}
+              ></img>
+            ) : (
+              <img
+                src={undone}
+                width="20"
+                height="20"
+                alt=""
+                style={{ marginRight: 30 }}
+              ></img>
+            )}
+            {t.text}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+    </Container>
   );
 };
 
