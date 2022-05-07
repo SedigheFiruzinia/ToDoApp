@@ -3,7 +3,6 @@ import taskService from "../services/tasks";
 export const tasksInitialized = () => {
   return async (dispatch) => {
     const tasks = await taskService.getAll();
-
     dispatch({
       type: "Tasks-Initialized",
       payload: {
@@ -13,13 +12,13 @@ export const tasksInitialized = () => {
   };
 };
 
-export const stateChanged = (id) => {
+export const stateChanged = (task) => {
   return async (dispatch) => {
-    await taskService.updateState(id);
+    await taskService.updateState(task.id);
     dispatch({
       type: "State-Changed",
       payload: {
-        id,
+        task,
       },
     });
   };
@@ -32,7 +31,7 @@ const TaskReducer = (state = [], action) => {
 
   case "State-Changed":
     return state.map((t) =>
-      t.id === action.payload.id
+      t.id === action.payload.task.id
         ? {
           ...t,
           state: !t.state,

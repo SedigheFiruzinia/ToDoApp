@@ -1,7 +1,8 @@
 import React from "react";
-import { Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import Tasks from "./Tasks";
 import Navbar from "./Navbar";
+import Notification from "./Notification";
 
 const Profile = () => {
   return (
@@ -10,6 +11,7 @@ const Profile = () => {
       <Row className="d-flex justify-content-center align-items-center pt-4 px-5">
         <Tasks />
       </Row>
+      <Col md={{ offset: 4 , span: 3 }} ><Notification /></Col>
     </Row>
   );
 };

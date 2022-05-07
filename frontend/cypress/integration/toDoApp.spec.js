@@ -19,10 +19,7 @@ describe("To Do app", function () {
     cy.visit('http://localhost:3000')
     cy.contains("design").click();
     const postClicked = cy.request('GET', 'http://localhost:3001/api/tasks/')[5]
-    firstClick !== secondClicked
-    
-    
-
+    preClick !== postClicked
   })
 });
 
