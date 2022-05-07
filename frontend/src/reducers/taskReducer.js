@@ -1,6 +1,6 @@
 import taskService from "../services/tasks";
 
-export const tasksInitialized = (id) => {
+export const tasksInitialized = () => {
   return async (dispatch) => {
     const tasks = await taskService.getAll();
 
@@ -27,21 +27,21 @@ export const stateChanged = (id) => {
 
 const TaskReducer = (state = [], action) => {
   switch (action.type) {
-    case "Tasks-Initialized":
-      return action.payload.tasks;
+  case "Tasks-Initialized":
+    return action.payload.tasks;
 
-    case "State-Changed":
-      return state.map((t) =>
-        t.id === action.payload.id
-          ? {
-              ...t,
-              state: !t.state,
-            }
-          : t
-      );
+  case "State-Changed":
+    return state.map((t) =>
+      t.id === action.payload.id
+        ? {
+          ...t,
+          state: !t.state,
+        }
+        : t
+    );
 
-    default:
-      return state;
+  default:
+    return state;
   }
 };
 

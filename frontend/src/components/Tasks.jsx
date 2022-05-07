@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Container, ListGroup } from "react-bootstrap";
 import { stateChanged } from "../reducers/taskReducer";
 import undone from "./Images/loading.png";
 import done from "./Images/tick (1).png";
@@ -8,7 +8,6 @@ import done from "./Images/tick (1).png";
 const Tasks = () => {
   const dispatch = useDispatch();
   const tasks = useSelector((element) => element.Tasks);
-
   const onClick = (id) => {
     dispatch(stateChanged(id));
   };

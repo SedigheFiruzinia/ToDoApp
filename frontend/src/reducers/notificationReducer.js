@@ -27,13 +27,13 @@ export const removeNotification = () => {
 
 const notificationReducer = (state = null, action) => {
   switch (action.type) {
-    case "Set":
-      clearTimeout(timeout);
-      return { text: action.payload.text };
-    case "Remove":
-      return null;
-    default:
-      return state;
+  case "Set":
+    clearTimeout(timeout);
+    return { text: action.payload.text };
+  case "Remove":
+    return null;
+  default:
+    return state;
   }
 };
 

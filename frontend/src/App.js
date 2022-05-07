@@ -11,16 +11,18 @@ const App = () => {
   useEffect(() => {
     dispatch(tasksInitialized());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
-    <Container fluid="xs" className="pl-0">
-      <Router>
-        <Routes>
-          <Route path="/" element={<Profile />} />
-        </Routes>
-      </Router>
-    </Container>
+    <>
+      <Container fluid="xs" className="pl-0">
+        <Router>
+          <Routes>
+            <Route path="/" element={<Profile />} />
+          </Routes>
+        </Router>
+      </Container>
+    </>
   );
 };
 
