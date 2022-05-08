@@ -7,7 +7,8 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
-    "start:test": "cross-env NODE_ENV=test node index.js"
+    "start:test": "cross-env NODE_ENV=test node index.js",
+    "lint": "eslint ."
   },
   "author": "Sedighe",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "express": "^4.18.1"
   },
   "devDependencies": {
+    "eslint": "^8.15.0",
     "jest": "^28.0.3",
     "nodemon": "^2.0.16",
     "supertest": "^6.2.3"
