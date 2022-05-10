@@ -28,7 +28,7 @@ tasksRouter.put('/:id', async(req, res) => {
   }
   // change the task state
   db.tasks[req.params.id].state = !db.tasks[req.params.id].state
-  fsPromises.writeFile('./db.json', JSON.stringify(db))
+  await fsPromises.writeFile('./db.json', JSON.stringify(db))
   res.json(db)
 
 })

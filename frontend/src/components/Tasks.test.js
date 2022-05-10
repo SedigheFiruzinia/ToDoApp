@@ -6,11 +6,12 @@ import thunk from "redux-thunk";
 import promiseMiddleware from "redux-promise-middleware";
 import { render } from "@testing-library/react";
 import Tasks from "./Tasks";
+import App from "../App"
 import taskReducer from "../reducers/taskReducer";
 import deepFreeze from "deep-freeze";
 import mockAxios from "axios";
-import { tasksInitialized } from "../reducers/taskReducer";
-import { stateChanged } from "../reducers/taskReducer";
+import { stateChanged ,tasksInitialized } from "../reducers/taskReducer";
+import userEvent from '@testing-library/user-event'
 
 describe("taskReducer", () => {
   test("returns the initial state", () => {
@@ -22,7 +23,7 @@ describe("taskReducer", () => {
     const action = {
       type: "State-Changed",
       payload: {
-        id: 0,
+        task:state[0],
       },
     };
     deepFreeze(state);
@@ -72,18 +73,34 @@ describe("Tasks Component", () => {
       { id: 0, text: "test backend", state: true },
       { id: 1, text: "test frontend", state: false },
     ],
+    Notification: { text:"hi" }
   };
-  const mockStore = configureMockStore();
+  const mockStore = configureMockStore([thunk, promiseMiddleware]);
 
   test("renders content", () => {
     store = mockStore(state);
     const { getByText } = render(
       <Provider store={store}>
-        <Tasks />
+        <App />
       </Provider>
     );
 
     expect(getByText("test backend")).not.toBeNull();
+  });
+
+  test("clicks", async() => {
+    store = mockStore(state);
+    const mockHandler = jest.fn()
+    const user = userEvent.setup()
+    const { getByText } = render(
+      <Provider store={store}>
+        <Tasks test ={mockHandler}/>
+      </Provider>
+    );
+
+    await user.click(getByText('test backend'))
+    expect(mockHandler.mock.calls).toHaveLength(1)
+
   });
 });
 

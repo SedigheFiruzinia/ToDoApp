@@ -13,10 +13,11 @@ const store = configureStore({
     Notification: notificationReducer,
   },
 });
-console.log(store.getState());
-
-ReactDOMClient.createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <App />
-  </Provider>
+const container = document.getElementById('root') || document.createElement('div');
+ReactDOMClient.createRoot(container).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
 );

@@ -1,15 +1,22 @@
 import axios from "axios";
 
+
 const baseUrl = "/api/tasks";
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl);
-  return response.data;
+  try{const response = await axios.get(baseUrl);
+    return response.data;}
+  catch(error) {
+    console.log(error);
+  }
 };
 
 const updateState = async (id) => {
-  const response = await axios.put(`${baseUrl}/${id}`);
-  return response.data;
+  try{const response = await axios.put(`${baseUrl}/${id}`);
+    return response.data;}
+  catch(error){
+    console.log(error)
+  }
 };
 
 const exportedObject = {

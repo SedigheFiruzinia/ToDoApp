@@ -1,77 +1,95 @@
-import React from "react";
-import { Provider } from "react-redux";
 import "@testing-library/jest-dom/extend-expect";
+import notificationReducer from "../reducers/notificationReducer";
+import deepFreeze from "deep-freeze";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import promiseMiddleware from "redux-promise-middleware";
-import { render } from "@testing-library/react";
-import Tasks from "./Tasks";
-import taskReducer from "../reducers/taskReducer";
-import deepFreeze from "deep-freeze";
 import mockAxios from "axios";
-import { tasksInitialized } from "../reducers/taskReducer";
-import { stateChanged } from "../reducers/taskReducer";
+import { render } from "@testing-library/react";
+import { setNotification, removeNotification } from "../reducers/NotificationReducer";
+import { Provider } from "react-redux";
+import Notification from "./Notification";
+import Profile from "./Profile"
 
-describe("taskReducer", () => {
+
+describe("notificationReducer", () => {
   test("returns the initial state", () => {
-    expect(taskReducer(undefined, {})).toEqual([]);
+    expect(notificationReducer(null, {})).toEqual(null);
   });
 
-  test("returns new state with action State-Changed", () => {
-    const state = [{ id: 0, text: "test backend", state: true }];
+  test("returns new text with action Set", () => {
+    const state = { text: "Task test backend is done" };
     const action = {
-      type: "State-Changed",
+      type: "Set",
       payload: {
-        id: 0,
+        text:"Task test frontend is done",
       },
     };
     deepFreeze(state);
-    const newState = taskReducer(state, action);
+    const newState = notificationReducer(state, action);
 
-    expect(newState).toHaveLength(1);
-    expect(newState).toContainEqual({
-      id: 0,
-      text: "test backend",
-      state: false,
+    expect(newState).toEqual({
+      text: "Task test frontend is done",
     });
   });
 
-  test("Tasks-Initialized", () => {
-    const state = [];
+  test("sets state to null with action Remove", () => {
+    const state = { text: "Task test backend is done" };
     const action = {
-      type: "Tasks-Initialized",
-      payload: {
-        tasks: [
-          { id: 0, text: "test backend", state: true },
-          { id: 1, text: "test frontend", state: true },
-          { id: 2, text: "implement backend", state: false },
-          { id: 3, text: "improve app", state: true },
-          { id: 4, text: "implement frontend", state: true },
-          { id: 5, text: "design frontend", state: false },
-          { id: 6, text: "deploy app", state: false },
-        ],
-      },
+      type: "Remove",
     };
-
     deepFreeze(state);
-    const newState = taskReducer(state, action);
+    const newState = notificationReducer(state, action);
 
-    expect(newState).toHaveLength(7);
-    expect(newState).toContainEqual({
-      id: 0,
-      text: "test backend",
-      state: true,
+    expect(newState).toEqual(null);
+  });
+})
+
+describe("actions", () => {
+  let store;
+  const mockStore = configureMockStore([thunk, promiseMiddleware]);
+  beforeEach(() => {
+    store = mockStore({
+      Notification: null,
     });
+  });
+
+  test("dispatches Set action and returns data on success", async () => {
+    mockAxios.get.mockImplementationOnce(() =>
+      Promise.resolve({
+        Notification: null,
+      })
+    );
+
+    await store.dispatch(setNotification("First task is done"));
+    const actions = store.getActions();
+
+    expect.assertions(1);
+    expect(actions[0].type).toEqual("Set");
+  });
+
+  test("dispatches Remove action", async () => {
+    mockAxios.put.mockImplementationOnce(() =>
+      Promise.resolve({
+        Notification:  { text: "test backend" },
+      })
+    );
+
+    await store.dispatch(removeNotification());
+    const actions = store.getActions();
+    expect.assertions(1);
+    expect(actions[0].type).toEqual("Remove");
   });
 });
 
-describe("Tasks Component", () => {
+describe("Notification Component", () => {
   let store;
   const state = {
     Tasks: [
       { id: 0, text: "test backend", state: true },
       { id: 1, text: "test frontend", state: false },
     ],
+    Notification: { text: "Task test backend is undone" }
   };
   const mockStore = configureMockStore();
 
@@ -79,47 +97,26 @@ describe("Tasks Component", () => {
     store = mockStore(state);
     const { getByText } = render(
       <Provider store={store}>
-        <Tasks />
+        <Notification />
       </Provider>
     );
 
-    expect(getByText("test backend")).not.toBeNull();
+    expect(getByText("Task test backend is undone")).not.toBeNull();
   });
-});
 
-describe("actions", () => {
-  let store;
-  const mockStore = configureMockStore([thunk, promiseMiddleware]);
-  beforeEach(() => {
+  test("returns null when there is no notification in store", () => {
     store = mockStore({
-      Tasks: [{ id: 0, text: "test backend", state: false }],
-    });
-  });
-
-  test("dispatches Tasks-Initialized action and returns data on success", async () => {
-    mockAxios.get.mockImplementationOnce(() =>
-      Promise.resolve({
-        Tasks: [],
-      })
+      Tasks: [
+        { id: 0, text: "test backend", state: true },
+        { id: 1, text: "test frontend", state: false },
+      ],
+    })
+    const { queryByLabelText } = render(
+      <Provider store={store}>
+        <Profile />
+      </Provider>
     );
 
-    await store.dispatch(tasksInitialized());
-    const actions = store.getActions();
-
-    expect.assertions(1);
-    expect(actions[0].type).toEqual("Tasks-Initialized");
-  });
-
-  test("dispatches State-Changed action", async () => {
-    mockAxios.put.mockImplementationOnce(() =>
-      Promise.resolve({
-        Tasks: [{ id: 0, text: "test backend", state: false }],
-      })
-    );
-
-    await store.dispatch(stateChanged(0));
-    const actions = store.getActions();
-    expect.assertions(1);
-    expect(actions[0].type).toEqual("State-Changed");
+    expect(queryByLabelText("task")).toBeFalsy();
   });
 });

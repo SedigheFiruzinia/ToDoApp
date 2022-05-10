@@ -7,11 +7,11 @@ import done from "./Images/tick (1).png";
 import { setNotification } from "../reducers/notificationReducer";
 
 
-const Tasks = () => {
+const Tasks = ({ test }) => {
   const dispatch = useDispatch();
   const tasks = useSelector((element) => element.Tasks);
 
-  const onClick = (task) => {
+  const onClick = async (task) => {
     dispatch(stateChanged(task));
     dispatch(setNotification(`Task "${task.text}" is ${task.state===true ? "undone" : "done :)"}`))
   };
@@ -20,7 +20,7 @@ const Tasks = () => {
     <Container>
       <ListGroup variant="flush">
         {tasks.map((t) => (
-          <ListGroup.Item action onClick={() => onClick(t)} key={t.id}>
+          <ListGroup.Item action onClick={ test===undefined ? () => onClick(t) : test } key={t.id}>
             {t.state ? (
               <img
                 src={done}
