@@ -1,8 +1,8 @@
-
 # To Do App
 This is a simple react todo app. 
 
-## instructions to run
+## Instructions
+### Run App
 
 First clone this repository.
 
@@ -32,4 +32,15 @@ To run the server
 
 ```bash
   $ npm start
+```
+### Run test
+Go to the desiered directory (backend/frontend)
+
+```bash
+  $ CI=true npm test
+```
+When both backend and frontend are running
+
+```bash
+  $ npm run cypress:open
 ```
