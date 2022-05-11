@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, ListGroup } from "react-bootstrap";
 import { stateChanged } from "../reducers/taskReducer";
-import undone from "./Images/loading.png";
+import pending from "./Images/oval (1).png";
 import done from "./Images/tick (1).png";
 import { setNotification } from "../reducers/notificationReducer";
 
@@ -13,7 +13,7 @@ const Tasks = ({ test }) => {
 
   const onClick = async (task) => {
     dispatch(stateChanged(task));
-    dispatch(setNotification(`Task "${task.text}" is ${task.state===true ? "undone" : "done :)"}`))
+    dispatch(setNotification(`Task "${task.text}" is ${task.state===true ? "pending" : "done :)"}`))
   };
 
   return (
@@ -28,15 +28,15 @@ const Tasks = ({ test }) => {
                 height="20"
                 alt=""
                 style={{ marginRight: 30 }}
-              ></img>
+              />
             ) : (
               <img
-                src={undone}
-                width="20"
-                height="20"
+                src={pending}
+                width="0"
+                height="0"
                 alt=""
-                style={{ marginRight: 30 }}
-              ></img>
+                style={{ marginRight: 50 }}
+              />
             )}
             {t.text}
           </ListGroup.Item>
